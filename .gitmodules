@@ -1,3 +1,6 @@
 [submodule "compiler/tools/build-gcc"]
 	path = compiler/tools/build-gcc
 	url = https://github.com/jwt27/build-gcc
+[submodule "src/testsound/mikmod"]
+	path = src/testsound/mikmod
+	url = https://github.com/h78r/mikmod.git
