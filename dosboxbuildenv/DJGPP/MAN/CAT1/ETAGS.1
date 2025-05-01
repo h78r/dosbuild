@@ -1,0 +1,264 @@
+
+
+
+etags(1)                    GNU Tools                    etags(1)
+
+
+NNAAMMEE
+       etags, ctags - generate tag file for Emacs, vi
+
+SSYYNNOOPPSSIISS
+       eettaaggss [[--aaCCDDRRSSVVhh]] [[--ii _f_i_l_e]] [[--ll _l_a_n_g_u_a_g_e]] [[--ii _r_e_g_e_x_p]] [[--oo
+       _t_a_g_f_i_l_e]]
+       [--c++] [--no-defines] [--ignore-indentation]
+       [--language=_l_a_n_g_u_a_g_e] [--regex=_r_e_g_e_x_p] [--no-regexp]
+       [--help] [--version] [--include=_f_i_l_e] [--output=_t_a_g_f_i_l_e]
+       [--append] _f_i_l_e ...
+
+       ccttaaggss [[--aaCCddRRSSVVhh]] [[--BBttTTuuvvwwxx]] [[--ll _l_a_n_g_u_a_g_e]]
+       [-i _r_e_g_e_x_p] [-o _t_a_g_f_i_l_e] [--c++] [--defines]
+       [--ignore-indentation] [--no-warn] [--cxref]
+       [--backward-search] [--forward-search] [--typedefs]
+       [--typedefs-and-c++] [--language=_l_a_n_g_u_a_g_e]
+       [--regex=_r_e_g_e_x_p] [--help] [--version]
+       [--output=_t_a_g_f_i_l_e] [--append] [--update] _f_i_l_e ...
+
+DDEESSCCRRIIPPTTIIOONN
+       The `eettaaggss' program is used to create a tag table file, in
+       a format understood by eemmaaccss(11); the  `ccttaaggss'  program  is
+       used  to  create a similar table in a format understood by
+       vvii(11).  Both forms of the program understand the syntax of
+       C,  C++, Fortran, Pascal, LaTeX, Scheme, Emacs Lisp/Common
+       Lisp, Erlang, Prolog  and  most  assembler-like  syntaxes.
+       Both  forms  read the files specified on the command line,
+       and write a tag table (defaults: `TAGS' for eettaaggss,  `tags'
+       for ccttaaggss) in the current working directory.  Files speci-
+       fied with relative file names will be recorded in the  tag
+       table  with file names relative to the directory where the
+       tag table resides.  Files  specified  with  absolute  file
+       names will be recorded with absolute file names.  The pro-
+       grams recognize the language used in an input  file  based
+       on  its file name and contents.  The --language switch can
+       be used to force parsing of the file names  following  the
+       switch according to the given language, overriding guesses
+       based on filename extensions.
+
+OOPPTTIIOONNSS
+       Some options make sense only for the vvii  style  tag  files
+       produced  by  ctags;  eettaaggss  does not recognize them.  The
+       programs accept unambiguous abbreviations for long  option
+       names.
+
+       --aa,, ----aappppeenndd
+              Append  to  existing  tag file.  (For vi-format tag
+              files, see also ----uuppddaattee.)
+
+       --BB,, ----bbaacckkwwaarrdd--sseeaarrcchh
+              Tag files written in the format expected by vvii con-
+              tain regular expression search instructions; the --BB
+              option writes them  using  the  delimiter  `??',  to
+              search  _b_a_c_k_w_a_r_d_s through files.  The default is to
+
+
+
+GNU Tools                   19apr1994                           1
+
+
+
+
+
+etags(1)                    GNU Tools                    etags(1)
+
+
+              use the delimiter `//', to search  _f_o_r_w_a_r_d_s  through
+              files.  Only ccttaaggss accepts this option.
+
+       --CC,, ----cc++++
+              Treat  files  with  `.c' and `.h' extensions as C++
+              code, not C code.  Files with `.C',  `.H',  `.cxx',
+              `.hxx',  or  `.cc' extensions are always assumed to
+              be C++ code.
+
+       --dd,, ----ddeeffiinneess
+              Create tag entries for C preprocessor  definitions,
+              too.   This  is  the default behavior for eettaaggss, so
+              this option is only accepted by ccttaaggss.
+
+       --DD,, ----nnoo--ddeeffiinneess
+              Do not create tag entries for C preprocessor  defi-
+              nitions.   This may make the tags file much smaller
+              if many header files are tagged.  This is  the  de-
+              fault  behavior  for  ccttaaggss, so this option is only
+              accepted by eettaaggss.
+
+       --ll _l_a_n_g_u_a_g_e, ----llaanngguuaaggee==_l_a_n_g_u_a_g_e
+              Parse the following files according  to  the  given
+              language.  More than one such options may be inter-
+              mixed with filenames.  Use ----hheellpp to get a list  of
+              the  available languages and their default filename
+              extensions.  The `auto' language can be used to re-
+              store  automatic  detection  of  language  based on
+              filename extension.  The  `none'  language  may  be
+              used  to  disable language parsing altogether; only
+              regexp matching is  done  in  this  case  (see  the
+              ----rreeggeexx option).
+
+       --oo _t_a_g_f_i_l_e, ----oouuttppuutt==_t_a_g_f_i_l_e
+              Explicit  name of file for tag table; overrides de-
+              fault `TAGS' or `tags'.   (But ignored with  --vv  or
+              --xx.)
+
+       --rr _r_e_g_e_x_p, ----rreeggeexx==_r_e_g_e_x_p
+              Make tags based on regexp matching for each line of
+              the files following this option, in addition to the
+              tags  made  with the standard parsing based on lan-
+              guage.  May be freely intermixed with filenames and
+              the  --RR  option.   The regexps are cumulative, i.e.
+              each option will add to  the  previous  ones.   The
+              regexps are of the form:
+
+                        //_t_a_g_r_e_g_e_x_p[//_n_a_m_e_r_e_g_e_x_p]//
+
+              where  _t_a_g_r_e_g_e_x_p  is  used  to match the lines that
+              must be tagged.  It should not match useless  char-
+              acters.   If the match is such that more characters
+              than needed are unavoidably matched  by  _t_a_g_r_e_g_e_x_p,
+              it  may  be  useful  to add a _n_a_m_e_r_e_g_e_x_p, to narrow
+
+
+
+GNU Tools                   19apr1994                           2
+
+
+
+
+
+etags(1)                    GNU Tools                    etags(1)
+
+
+              down the tag scope.  ccttaaggss ignores regexps  without
+              a _n_a_m_e_r_e_g_e_x_p.
+              Here are some examples.  All the regexps are quoted
+              to protect them from shell interpretation.
+
+              Tag the DEFVAR macros in the emacs source files:
+              _-_-_r_e_g_e_x_=_'_/_[ _\_t_]_*_D_E_F_V_A_R___[_A_-_Z__ _\_t_(_]_+_"_\_(_[_^_"_]_+_\_)_"_'
+
+              Tag VHDL files (this example is a single long line,
+              broken here for formatting reasons):
+              _-_-_l_a_n_g_u_a_g_e_=_n_o_n_e _-_-_r_e_g_e_x_=_'_/_[ _\_t_]_*_\_(_A_R_C_H_I_T_E_C_T_U_R_E_\_|_\
+              _C_O_N_F_I_G_U_R_A_T_I_O_N_\_) _+_[_^ _]_* _+_O_F_/_' _-_-_r_e_g_e_x_=_'_/_[ _\_t_]_*_\
+              _\_(_A_T_T_R_I_B_U_T_E_\_|_E_N_T_I_T_Y_\_|_F_U_N_C_T_I_O_N_\_|_P_A_C_K_A_G_E_\_( _B_O_D_Y_\_)_?_\
+              _\_|_P_R_O_C_E_D_U_R_E_\_|_P_R_O_C_E_S_S_\_|_T_Y_P_E_\_)_[ _\_t_]_+_\_(_[_^ _\_t_(_]_+_\_)_/_\_3_/_'
+
+              Tag Cobol files:
+              _-_-_l_a_n_g_u_a_g_e_=_n_o_n_e _-_-_r_e_g_e_x_=_'_/_._._._._._._._[_a_-_z_A_-_Z_0_-_9_-_]_+_\_._/_'
+
+              Tag Postscript files:
+              _-_-_l_a_n_g_u_a_g_e_=_n_o_n_e _-_-_r_e_g_e_x_=_'_#_/_[_^ _\_t_{_]_+_#_/_'
+
+              Tag TCL files (this last example shows the usage of
+              a _t_a_g_r_e_g_e_x_p):
+              _-_-_l_a_n_g_=_n_o_n_e _-_-_r_e_g_e_x_=_'_/_p_r_o_c_[ _\_t_]_+_\_(_[_^ _\_t_]_+_\_)_/_\_1_/_'
+
+
+       --RR,, ----nnoo--rreeggeexx
+              Don't do any more regexp matching on the  following
+              files.  May be freely intermixed with filenames and
+              the ----rreeggeexx option.
+
+       --SS,, ----iiggnnoorree--iinnddeennttaattiioonn
+              Don't rely on indentation as much  as  we  normally
+              do.   Currently,  this  means  not to assume that a
+              closing brace in the  first  column  is  the  final
+              brace  of  a  function or structure definition in C
+              and C++.
+
+       --tt,, ----ttyyppeeddeeffss
+              Record typedefs in C code as tags.  Since  this  is
+              the  default behaviour of eettaaggss, only ccttaaggss accepts
+              this option.
+
+       --TT,, ----ttyyppeeddeeffss--aanndd--cc++++
+              Generate tag entries for  typedefs,  struct,  enum,
+              and  union  tags,  and C++ member functions.  Since
+              this is the default behaviour of eettaaggss, only  ccttaaggss
+              accepts this option.
+
+       --uu,, ----uuppddaattee
+              Update  tag  entries for _f_i_l_e_s specified on command
+              line, leaving tag entries for other files in place.
+              Currently,  this is implemented by deleting the ex-
+              isting entries for the given files and then rewrit-
+
+
+
+GNU Tools                   19apr1994                           3
+
+
+
+
+
+etags(1)                    GNU Tools                    etags(1)
+
+
+              ing  the  new  entries at the end of the tags file.
+              It is often faster to simply rebuild the entire tag
+              file than to use this.  Only ccttaaggss accepts this op-
+              tion.
+
+       --vv,, ----vvggrriinndd
+              Instead of generating a tag file, write  index  (in
+              vvggrriinndd  format) to standard output.  Only ccttaaggss ac-
+              cepts this option.
+
+       --ww,, ----nnoo--wwaarrnn
+              Suppress warning messages about duplicate  entries.
+              The  eettaaggss program does not check for duplicate en-
+              tries, so this option is not allowed with it.
+
+       --xx,, ----ccxxrreeff
+              Instead of generating a tag  file,  write  a  cross
+              reference  (in  ccxxrreeff  format)  to standard output.
+              Only ccttaaggss accepts this option.
+
+       --HH,, ----hheellpp
+              Print usage information.
+
+       --VV,, ----vveerrssiioonn
+              Print the current version of the program  (same  as
+              the version of the emacs eettaaggss is shipped with).
+
+
+SSEEEE AALLSSOO
+       `eemmaaccss' entry in iinnffoo; _G_N_U _E_m_a_c_s _M_a_n_u_a_l, Richard Stallman.
+       ccxxrreeff(11), eemmaaccss(11), vvggrriinndd(11), vvii(11).
+
+
+CCOOPPYYIINNGG
+       Copyright (c) 1992 Free Software Foundation, Inc.
+
+       Permission is granted  to  make  and  distribute  verbatim
+       copies  of  this  manual provided the copyright notice and
+       this permission notice are preserved on all copies.
+
+       Permission is granted to copy and distribute modified ver-
+       sions  of  this  manual  under the conditions for verbatim
+       copying, provided that the entire resulting  derived  work
+       is  distributed  under  the  terms  of a permission notice
+       identical to this one.
+
+       Permission is granted to copy and distribute  translations
+       of this manual into another language, under the above con-
+       ditions for modified versions, except that this permission
+       notice  may  be  included  in translations approved by the
+       Free Software Foundation instead of in  the  original  En-
+       glish.
+
+
+
+
+
+GNU Tools                   19apr1994                           4
+
+

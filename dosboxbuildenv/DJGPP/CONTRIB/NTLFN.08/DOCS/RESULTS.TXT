@@ -1,0 +1,45 @@
+Tests
+All tests made with ntlfn07.zip package
+
+Symbols
+<empty>	not performed
++	passed
+-	failed
+n	not available
+f	partially failed
+
+Results
+
+Package		II	size	configure	make	make check
+================][================================================
+autocnf2.13	II	small	configure +  	make n  check   n 
+bash1147	II	large 	configure n 	make +  check   - in Wi95 fails too   
+binutl-2.951	II	large	configure +	make +	check   + 
+bison-1.28	II	medium	configure + 	make +  check   n  po/makefile.in.in intl/po2tbl.sed.in
+cpio-2.4.2 	II	small	configure +	make +	check	n 
+diffutil.272    II	small	configure n 	make +  check   +
+ed-0.2 		II	small	configure + 	make +  check  	+ 
+emacs-20.3	II	large	configure +	make +	check   n	
+findutil.41     II	small	configure n 	make +  check   n
+filutil3.16     II	medium	configure + 	make +  check   n
+flex-2.5-4      II	small	configure n 	make +  bigcheck+
+gawk-3.0-4      II	medium	configure n 	make +  check   +
+gcc-2.952	II	large	confggure +	make +	check      	
+gdb4-18		II	large	configure n	make +	check   n
+grep-2.4        II	medium	configure + 	make +  check   +
+gzip-1.24a      II	small	configure n 	make +  check   +
+id-utils.32     II	medium	configure +  	make +  check   +
+indent-1.9-1    II	small	configure + 	make +  check   n
+less-340        II	small	configure n  	make +  check   n
+m4-1.4 		II	small	configure + 	make +  check   f checks 30, 58
+make-3.781      II	medium	configure + 	make +  check	f one test fails 
+patch-2.5       II	small	configure + 	make +  check   n
+perl5.005	II	large	configure +	make +	check	f some tests never end	
+sed-3.02        II	small	configure + 	make +  check   +
+sh-util1.12     II	small	configure n 	make +  check   n  
+tar-1.12a       II	medium	configure + 	make +  check   +           
+texinfo3.12     II	medium	configure +	make +  check   n      
+txtutil2.0      II	large 	configure + 	make +  check   +   
+================][================================================                
+                
+                

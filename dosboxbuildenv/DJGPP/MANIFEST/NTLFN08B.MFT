@@ -1,0 +1,15 @@
+contrib/ntlfn.08/
+contrib/ntlfn.08/COPYING
+contrib/ntlfn.08/INSTALL
+contrib/ntlfn.08/NEWS
+contrib/ntlfn.08/README
+contrib/ntlfn.08/bin/
+contrib/ntlfn.08/bin/config.nt
+contrib/ntlfn.08/bin/lfnload.com
+contrib/ntlfn.08/bin/lfnsrv.dll
+contrib/ntlfn.08/docs/
+contrib/ntlfn.08/docs/faq.txt
+contrib/ntlfn.08/docs/results.txt
+manifest/ntlfn08b.dsm
+manifest/ntlfn08b.mft
+manifest/ntlfn08b.ver

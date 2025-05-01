@@ -1,0 +1,15 @@
+Installing LFN Services
+
+Review config.nt supplied with the LFN Services and compare it with 
+%SystemRoot%\system32\config.nt (usually c:\winnt\system32\config.nt) 
+The relewant line to look for is NTCMDPROMT.
+You can enable NTCMDPROMT if you want doskey (ie commandline history to work)
+Once you're done with NTCMDPROMT in %SystemRoot%\system32\config.nt open a new 
+DOS box (Start-> Programs-> CommandPrompt) switch to the directory where you
+put lfnload.com and lfnsrv.dll and run lfnload. If everything went fine you
+will receive a message saying that lfnsrv.dll has been loaded.
+Alternatively you can call lfnload.com from autoexec.nt so that it loads
+automatically on DOS box startup. The files lfnload.com and lfnsrv.dll must
+reside in the same directory for the LFN Services to work properly.
+
+

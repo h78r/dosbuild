@@ -1,0 +1,38 @@
+#
+# DSM for ntlfm 0.8 binaries
+# Written by Wojciech Galazka <wojciech.galazka@polkomtel.com.pl>
+#
+
+dsm-file-version: 1.0
+dsm-name: ntlfn08b
+dsm-version: 0.4.0
+dsm-type: binaries
+
+dsm-author: Wojciech Galazka
+dsm-author-email: wojciech.galazka@polkomtel.com.pl
+
+name: ntlfn
+version: 0.8
+manifest: ntlfn08b
+binaries-dsm: ntlfn08b 
+sources-dsm: ntlfn08s
+short-description: LFN Services for Windows NT 4.0
+long-description:  Long filename API Services for Windows NT 4.0
+license: GNU General Public License
+
+author: Wojciech Galazka
+author-email: wojciech.galazka@polkomtel.com.pl
+author: Andrew Crabtree
+web-site: http://www.cybertrails.com/~fys/longfile.htm
+newsgroup: comp.os.msdos.djgpp
+newsgroup-description: Forum for DJGPP users
+
+simtelnet-path: v2misc/
+zip: ntlfn08b.zip
+pre-install-readme: INSTALL
+post-install-readme: README
+
+requires: Windows-NT
+provides: LFN
+
+conflicts-with: windows

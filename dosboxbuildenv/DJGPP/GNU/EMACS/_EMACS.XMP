@@ -1,0 +1,472 @@
+;;; This is an example of .emacs file
+
+;
+;;; Tell Emacs to obey variables set by the files it reads
+(setq enable-local-eval t)
+;
+;;; Work in 80x50 screen size, but switch back to 80x25
+;;; before exiting and when suspending Emacs.
+(mode4350)
+;
+(or dos-windows-version
+    (progn
+      (defun my-exit-stuff ()
+	"My own exit routine.  Currently just switches to the 25x80 mode."
+	(mode25))
+      (add-hook 'kill-emacs-hook 'my-exit-stuff)
+      (add-hook 'suspend-hook 'mode25)
+      (add-hook 'suspend-resume-hook 'mode4350)))
+;
+;;; Extended video modes; these are for ATi Mach32 SVGA
+;(setq screen-dimensions-25x132 35)
+;(setq screen-dimensions-44x132 51)
+;
+;;; and these are for Tseng Lab's ET6000
+(setq screen-dimensions-60x80 38)
+(setq screen-dimensions-25x132 35)
+(setq screen-dimensions-28x132 36)
+(setq screen-dimensions-44x132 34)
+(setq screen-dimensions-60x132 33)
+(setq screen-dimensions-40x100 42)
+;
+;;; Display the time on modeline
+(condition-case err
+    (display-time)
+  (error
+   (message "Cannot display time %s" (cdr err))))
+;
+;
+;;; Set username, full name and mail-address
+(setq mail-host-address "put.your.mail.server.here")
+(setq user-full-name "Put Your Name Here")
+(setq user-login-name "your-username")
+;
+;;; Blink the screen instead of beeping.
+(setq visible-bell t)
+;
+;;; The following color settings will work well only if the
+;;; default background color is lightgray!
+(set-face-foreground 'default		"blue")
+(set-face-background 'modeline		"blue")
+(set-face-foreground 'modeline		"white")
+(set-face-background 'region		"magenta")
+(set-face-foreground 'region		"yellow")
+(set-face-foreground 'msdos-menu-active-face		"blue")
+(set-face-background 'msdos-menu-active-face		"cyan")
+(set-face-background 'msdos-menu-passive-face		"cyan")
+(set-face-foreground 'msdos-menu-passive-face		"lightgray")
+(set-face-foreground 'msdos-menu-select-face		"white")
+;
+;; Printing under MS-DOS
+;
+;;; If you have a PostScript printer:
+(setq dos-ps-printer "PRN")
+;;; If you don't have a PostScript printer, uncomment the following
+;;; line and comment-out the previous one.
+;(setq ps-lpr-command "c:/gs/gs386")
+(setq ps-lpr-switches '("-q" "-dNOPAUSE"
+			"-sDEVICE=ljet4"
+			"-r600"
+			"-sPAPERSIZE=a4"
+			"-sOutputFile=LPT1"
+			"-Ic:/gs"
+			"-"))
+(setq lpr-headers-switches nil)
+;
+;;; This is to not display the initial message (which says to a novice
+;;; user what to do first if he/she is confused).
+(setq inhibit-startup-message t)
+;
+;;; ...and this inhibits the startup blurb in the echo area.
+(setq inhibit-startup-echo-area-message "eliz")
+;
+;;; This sets the garbage collection threshold to a large value, so
+;;; Emacs won't garbage-collect too often (on a single-user, single-tasked
+;;; PC who cares, anyway?).
+(setq gc-cons-threshold 1000000)
+;
+;;; I want to know when Emacs collects garbage.
+(setq garbage-collection-messages t)
+;
+;;; This disables down-arrow and C-n at the end of a buffer from adding
+;;; a new line to that buffer.
+(setq next-line-add-newlines nil)
+;
+;;; Overlap between window-fulls when scrolling by pages
+(setq next-screen-context-lines 3)
+;
+;;; Key customizations.
+(global-set-key "\C-xg" 'goto-line)
+(global-set-key "\C-x\C-b" 'electric-buffer-list)
+(global-set-key "\M-i" 'indent-relative)
+(global-set-key "\C-xy" 'insert-register)
+(global-set-key [f1] 'info)
+(defun my-previous-window (arg)
+  "Switch to previous window."
+  (interactive "p")
+  (other-window (- arg)))
+(global-set-key [M-home] 'my-previous-window)
+(global-set-key [M-end] 'other-window)
+(global-set-key [C-home] 'beginning-of-buffer)
+(global-set-key [C-end] 'end-of-buffer)
+(global-set-key [M-kp-divide] 'dabbrev-expand)
+(global-set-key [M-right] 'end-of-line)
+(global-set-key [M-left] 'beginning-of-line)
+(global-set-key [C-prior] 'enlarge-window)
+(global-set-key [C-next] 'shrink-window)
+(global-set-key "\M-z" (function (lambda () (interactive) (scroll-down 1))))
+(global-set-key "\C-z" (function (lambda () (interactive) (scroll-up 1))))
+;
+(setq-default transient-mark-mode	nil)
+(setq line-number-mode			nil
+      auto-save-timeout			15 ; auto-save after 15 sec of idleness
+      require-final-newline		t  ; always add a newline to file's end
+      search-highlight			t  ; highlight search strings
+      compilation-window-height		10
+      compilation-ask-about-save	nil)
+;
+;;; This makes `apropos' and `super-apropos' do everything that they can.
+;;; Makes them run 2 or 3 times slower.  Set this nil if you have a
+;;; slow machine.
+(setq apropos-do-all t)
+;
+;;; Automatic online help for library functions
+(autoload 'find-tag-tag "etags")
+(autoload 'Info-find-node "info")
+(defun libc-help (arg)
+  (interactive (list (find-tag-tag "C library topic: ")))
+  (Info-find-node "libc" arg))
+;
+(defun my-c-stuff ()
+    "My own C stuff.  Swaps RET and LFD (^J) and customizes
+indentation style and dynamic abbrevs."
+    (modify-syntax-entry ?_ "w")
+    (c-set-offset 'case-label '+)
+    (c-set-offset 'brace-list-open '+)
+    (setq c-electric-pound-behavior '(alignleft))
+    (setq c-progress-interval 2) ;; or else I tend to think it crashed
+    (setq c-macro-shrink-window-flag t)
+    (setq c-macro-prompt-flag t)
+    (set (make-local-variable 'dabbrev-case-fold-search) nil)
+    (set (make-local-variable 'dabbrev-case-replace) nil)
+    (define-key c++-mode-map [C-f1] 'libc-help)
+    (define-key c++-mode-map "\C-c %" 'match-paren)
+    (define-key c++-mode-map "\C-j" 'newline)
+    (define-key c++-mode-map "\C-m" 'newline-and-indent)
+    (define-key c-mode-map [C-f1] 'libc-help)
+    (define-key c-mode-map "\C-c %" 'match-paren)
+    (define-key c-mode-map "\C-j" 'newline)
+    (define-key c-mode-map "\C-m" 'newline-and-indent))
+(add-hook 'c-mode-common-hook 'my-c-stuff)
+;
+(defun my-textmode-stuff ()
+  "My own Text-Mode routine. Customizes dynamic abbrevs."
+  (set (make-local-variable 'dabbrev-case-fold-search) t)
+  (set (make-local-variable 'dabbrev-case-replace) t)
+  (set (make-local-variable 'dabbrev-upcase-means-case-search) t))
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'my-textmode-stuff)
+;
+(defun my-elisp-stuff ()
+  "My own Emacs Lisp stuff.  Currently remaps ^J and ^M and customizes
+dynamic abbrevs."
+  (set (make-local-variable 'dabbrev-case-fold-search) nil)
+  (set (make-local-variable 'dabbrev-case-replace) nil)
+  (define-key emacs-lisp-mode-map "\C-j" 'newline)
+  (define-key emacs-lisp-mode-map "\C-m" 'newline-and-indent))
+(add-hook 'emacs-lisp-mode-hook 'my-elisp-stuff)
+(defun my-info-stuff ()
+  "My own Info stuff.  Currently sets faces and some variables."
+    (set-face-foreground 'info-xref	"yellow")
+    (set-face-background 'info-xref	"lightgray")
+    (set-face-foreground 'info-node	"lightred")
+    (set-face-background 'info-node	"lightgray")
+    (setq automatic-footnotes "On"))
+(add-hook 'Info-mode-hook 'my-info-stuff)
+;
+;;; Edit the *.txh files (from djlsrNNN.zip) in Texinfo mode
+(setq auto-mode-alist
+      (append '(("\\.txh$"  . texinfo-mode))
+	      auto-mode-alist))
+(defun my-texinfo-stuff ()
+  "My own Texinfo mode customizations."
+  (set (make-local-variable 'dabbrev-case-fold-search) nil)
+  (set (make-local-variable 'dabbrev-case-replace) nil)
+  (define-key emacs-lisp-mode-map "\C-j" 'newline)
+  (define-key emacs-lisp-mode-map "\C-m" 'newline-and-indent))
+(add-hook 'texinfo-mode-hook 'my-texinfo-stuff)
+;
+;;; Automatically makes the matching parenthesis stand out in color.
+(condition-case err
+    (show-paren-mode t)
+  (error
+   (message "Cannot show parens %s" (cdr err))))
+;
+;;; This moves the mouse pointer out of my way when I type.
+(custom-set-variables
+ '(mouse-avoidance-threshold 3))
+(condition-case err
+    (or (and (boundp 'dos-windows-version)
+	     (not (null dos-windows-version)))
+	(mouse-avoidance-mode 'exile))
+  (error
+   (message "Cannot use mouse-avoid %s" (cdr err))))
+;
+;;; Enable some commands we need.
+(put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+;
+;;; The following will cause Emacs to detect the ``.html'' suffix
+;;; and activate html-mode appropriately.
+(autoload 'html-mode "sgml-mode" "HTML major mode." t)
+(delq (assoc "\\.html$" auto-mode-alist) auto-mode-alist)
+(setq auto-mode-alist (cons '("\\.html$" . html-mode) auto-mode-alist))
+(delq (assoc "\\.htm$" auto-mode-alist) auto-mode-alist)
+(setq auto-mode-alist (cons '("\\.htm$" . html-mode) auto-mode-alist))
+;
+;;; Matlab Mode support.
+(autoload 'matlab-mode "matlab-mode" "Enter Matlab mode." t)
+(setq auto-mode-alist (cons '("\\.m$" . matlab-mode) auto-mode-alist))
+(defun my-matlab-mode-hook ()
+  (setq fill-column 76)
+  (turn-on-auto-fill)
+  (font-lock-mode 1))
+(setq matlab-mode-hook 'my-matlab-mode-hook)
+;
+;; This loads generic modes which support e.g. batch files.
+(require 'generic-x)
+;
+;; This loads the Partial Completion package and customizes its list
+;;; of directories to search for include files.
+(partial-completion-mode t)
+(setq PC-include-file-path
+      (list (concat (getenv "DJDIR") "/include")
+	    (concat (getenv "DJDIR") "/lang/cxx")))
+;
+;;; Special setup for INTERRUP.x files from Ralf Brown's Interrupt List.
+(delq (assoc "[iI][nN][[tT][eE][rR][rR][uU][pP]\\.[a-zA-Z]$" auto-mode-alist)
+      auto-mode-alist)
+(setq auto-mode-alist
+      (cons
+       '("[iI][nN][[tT][eE][rR][rR][uU][pP]\\.[a-zA-Z]$" . fundamental-mode)
+	    auto-mode-alist))
+(delq (assoc "[iI][nN][[tT][eE][rR][rR][uU][pP]\\.[a-zA-Z]$"
+	     file-coding-system-alist)
+      file-coding-system-alist)
+(setq file-coding-system-alist
+      (cons '("[iI][nN][[tT][eE][rR][rR][uU][pP]\\.[a-zA-Z]$" .
+	      (undecided-dos . undecided-dos))
+	    file-coding-system-alist))
+;
+;;; Font-locking faces set-up
+;
+(setq font-lock-maximum-size (* 70 1024))
+;
+;; Switch on font-lock for every mode which supports it.
+(if (fboundp 'global-font-lock-mode)
+    (global-font-lock-mode t)
+  (add-hook 'find-file-hooks 'turn-on-font-lock))
+;
+;; Face customizations don't work with ps-print (as of 20.0).  Therefore,
+;; only the colors are customized here; see the ps-print section for the rest.
+(custom-set-faces
+ '(font-lock-comment-face ((((class color) (background light)) (:foreground "Firebrick"))))
+ '(font-lock-constant-face ((((class color) (background light)) (:foreground "lightblue"))))
+ '(font-lock-type-face ((((class color) (background light)) (:foreground "lightgreen"))))
+ '(font-lock-variable-name-face ((((class color) (background light)) (:foreground "yellow"))))
+ '(font-lock-function-name-face ((((class color) (background light)) (:foreground "lightred"))))
+ '(font-lock-builtin-face ((((class color) (background light)) (:foreground "white"))))
+ '(speedbar-button-face  ((((class color) (background light)) (:foreground "lightgreen"))))
+ '(speedbar-file-face  ((((class color) (background light)) (:foreground "lightcyan"))))
+ '(speedbar-directory-face  ((((class color) (background light)) (:foreground "lightblue"))))
+ '(speedbar-highlight-face  ((((class color) (background light)) (:foreground "yellow")))))
+;
+;; Lazy-lock setup
+(autoload 'turn-on-lazy-lock "lazy-lock"
+  "Unconditionally turn on Lazy Lock mode.")
+(add-hook 'font-lock-mode-hook 'turn-on-lazy-lock)
+(setq lazy-lock-minimum-size (* 4 1024))
+(setq lazy-lock-stealth-time 16)
+(setq lazy-lock-defer-time 0.15)
+(setq lazy-lock-stealth-nice 1)
+(setq lazy-lock-stealth-verbose t)
+(setq lazy-lock-stealth-lines 60)
+;
+;; Setting this to t makes scrolling faster, but may momentarily present
+;; unfontified areas when you scroll into them.
+(setq lazy-lock-defer-on-scrolling t)
+(setq font-lock-maximum-size nil)  ; appropriate with lazy-lock
+;
+;;; This enables archive browsing and editing.
+(setq auto-mode-alist
+      (cons '("\\.\\(arc\\|zip\\|lzh\\|zoo\\)\\'" . archive-mode)
+            auto-mode-alist))
+;; I want to use InfoZip's UnZip
+(setq archive-zip-use-pkzip nil)
+(autoload 'archive-mode "arc-mode" "Major mode for editing archives." t)
+;
+;;; This loads a package which enables automatic scrolling when long
+;;; lines are truncated.
+(condition-case err
+    (require 'auto-show)
+  (error
+   (message "Cannot auto-scroll long lines %s" (cdr err))))
+;
+;;; This enables automatic resizing of the minibuffer when its contents
+;;; won't fit into a single line.
+(condition-case err
+    (resize-minibuffer-mode 1)
+  (error
+   (message "Cannot resize minibuffer %s" (cdr err))))
+;
+;;; Dired-x installation and customization.
+;
+;;; This makes `dired-jump' and `dired-jump-other-window' work
+;;; even *before* `dired' has been loaded.
+(define-key global-map "\C-x\C-j" 'dired-jump)
+;
+;;; This installs `dired-x.el' when `dired' is first invoked, and also
+;;; replaces `find-file' with `dired-x-find-file'.
+(add-hook 'dired-load-hook
+	  (function (lambda ()
+		      (setq dired-x-hands-off-my-keys nil)
+		      (load "dired-x")
+		      ;; Set dired-x global variables here.  For example:
+		      ;; (setq dired-guess-shell-gnutar "gtar")
+		      (setq dired-local-variables-file "_dired")
+		      (setq dired-no-confirm
+			    '(byte-compile chmod compress copy load move
+					   print shell symlink uncompress))
+		      )))
+
+(add-hook 'dired-mode-hook
+	  (function (lambda ()
+		      ;; Set dired-x buffer-local variables here.  For example:
+		      ;; (setq dired-omit-files-p t)
+		      )))
+;
+;;; Electric Buffer Menu mode customization.
+(defun my-ebuf-stuff ()
+    "My own Electric Buffer Menu stuff.  Currently binds some
+convenience keys."
+    (define-key electric-buffer-menu-mode-map [up] 'previous-line)
+    (define-key electric-buffer-menu-mode-map [down] 'next-line)
+    (define-key electric-buffer-menu-mode-map [next] 'scroll-up)
+    (define-key electric-buffer-menu-mode-map [previous] 'scroll-down)
+    (define-key electric-buffer-menu-mode-map [left] 'scroll-right)
+    (define-key electric-buffer-menu-mode-map [right] 'scroll-left))
+(add-hook 'electric-buffer-menu-mode-hook 'my-ebuf-stuff)
+;
+;;; This installs the `saveplace' package and defines where the places
+;;; in visited files are saved between sessions.
+(condition-case err
+    (require 'saveplace)
+  (error
+   (message "Cannot save places %s" (cdr err))))
+(setq-default save-place t)    ; place saved in all files
+(setq save-place-file	 "~/_places.sav")
+;
+;;; Ps-Print customization.
+(setq ps-header-lines 3)
+(setq ps-paper-type (if (>= emacs-major-version 20) 'a4 'ps-a4))
+(or (>= emacs-major-version 20) (setq ps-landscape-mode nil))
+(setq ps-font-size 10)
+(setq ps-print-control-characters 'control)
+(setq ps-print-color-p nil)
+;
+;;; Since ps-print cannot reliably get attributes from face customizations,
+;;; we need to put faces into bold, italic and underlined lists by hand.
+(setq ps-bold-faces
+      '(font-lock-comment-face
+	font-lock-keyword-face
+	font-lock-builtin-face
+	font-lock-function-name-face))
+(setq ps-italic-faces
+      '(font-lock-comment-face
+	font-lock-variable-name-face
+	font-lock-string-face))
+(setq ps-underlined-faces
+      '(font-lock-type-face
+	font-lock-reference-face
+	font-lock-builtin-face))
+
+;;; PS-Mule setup for printing non-ASCII characters
+(setq ps-multibyte-buffer 'bdf-font-except-latin)
+(setq bdf-directory-list (list (concat invocation-directory "../fonts/bdf")))
+
+;;; Find-Dired customization.
+(setq find-find-command "find")
+;
+;;; Temporary windows should not get into our way...
+(and (fboundp 'temp-buffer-resize-mode)
+     (temp-buffer-resize-mode 1))
+;
+;;; Additional customization of the DOS terminal display.
+;; !!!Replace 862 with your actual codepage number, if you uncomment !!!
+;; !!!the following 5 lines                                          !!!
+;(setq dos-codepage 862)
+;(let* ((cp (format "cp%s" dos-codepage))
+;       (charset (cp-charset-for-codepage cp))
+;       (offset (cp-offset-for-codepage cp)))
+;  (cp-make-coding-systems-for-codepage cp charset offset))
+(defun set-display-latin1-char (char glyph)
+  "Make a Latin-1 CHAR be displayed as GLYPH."
+  (aset standard-display-table
+	(make-char 'latin-iso8859-1 (- char 128))
+	(vconcat
+	 (if (numberp glyph)
+	     (char-to-string glyph)
+	   (if (> (length glyph) 1) (concat "{" glyph "}")) glyph))))
+(defun my-dos-terminal-setup ()
+  "Additional customization of the DOS terminal display."
+  (set-display-latin1-char 161 173)	; inverted exclam
+  (set-display-latin1-char 162 155)	; cents
+  (set-display-latin1-char 163 156)	; Pound
+  (set-display-latin1-char 165 157)	; Yen
+  (set-display-latin1-char 166 179)	; vertical line
+  (set-display-latin1-char 167  21)	; section sign
+  (set-display-latin1-char 170 166)	; feminine ordinal
+  (set-display-latin1-char 171 174)	; <<
+  (set-display-latin1-char 172 170)	; not
+  (set-display-latin1-char 173 196)	; soft hyphen
+  (set-display-latin1-char 176 248)	; degree
+  (set-display-latin1-char 177 241)	; +/-
+  (set-display-latin1-char 178 253)	; ^2
+  (set-display-latin1-char 181 230)	; micro sign
+  (set-display-latin1-char 182  20)	; pilcrow
+  (set-display-latin1-char 183 249)	; middle dot
+  (set-display-latin1-char 186 167)	; masculine ordinal
+  (set-display-latin1-char 187 175)	; >>
+  (set-display-latin1-char 188 172)	; 1/4
+  (set-display-latin1-char 189 171)	; 1/2
+  (set-display-latin1-char 191 168)	; inverted question mark
+  (set-display-latin1-char 223 225)	; small sharp s
+  (set-display-latin1-char 225 160)	; a with acute
+  (set-display-latin1-char 237 161)	; i with acute
+  (set-display-latin1-char 241 164)	; n with tilde
+  (set-display-latin1-char 243 162)	; o with acute
+  (set-display-latin1-char 247 246)	; division sign
+  (set-display-latin1-char 250 163)	; u with acute
+  )
+;; Do NOT uncomment the following line if your codepage is
+;; 437 or 850!
+;(add-hook 'dos-codepage-setup-hook 'my-dos-terminal-setup)
+;
+;;; This enables automatic saving of the Emacs desktop configuration into
+;;; a file called `emacs.desktop'.  Should be as near the .emacs file end
+;;; as possible.
+(setq desktop-missing-file-warning nil)
+(condition-case err
+    (progn 
+      (load "desktop")
+      (desktop-load-default)
+      (if (file-exists-p (concat "./" desktop-basefilename))
+	  (desktop-read)
+	(desktop-save "./")))
+  (error
+   (message "Cannot save desktop %s" (cdr err))))
+;
+;;; MULE setup:
+(modify-coding-system-alist 'file
+			    "[cC]hange[lL]og?\\(\\.[0-9]+\\)?\\'" 'latin-1)

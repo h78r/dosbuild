@@ -1,0 +1,17 @@
+gnu/gcc-3.42/gcc/objc/readme
+lib/gcc/djgpp/3.42/include/objc/NXConstStr.h
+lib/gcc/djgpp/3.42/include/objc/Object.h
+lib/gcc/djgpp/3.42/include/objc/Protocol.h
+lib/gcc/djgpp/3.42/include/objc/encoding.h
+lib/gcc/djgpp/3.42/include/objc/hash.h
+lib/gcc/djgpp/3.42/include/objc/objc-api.h
+lib/gcc/djgpp/3.42/include/objc/objc-list.h
+lib/gcc/djgpp/3.42/include/objc/objc.h
+lib/gcc/djgpp/3.42/include/objc/sarray.h
+lib/gcc/djgpp/3.42/include/objc/thr.h
+lib/gcc/djgpp/3.42/include/objc/typedstream.h
+lib/gcc/djgpp/3.42/libobjc.a
+libexec/gcc/djgpp/3.42/cc1obj.exe
+manifest/objc342b.dsm
+manifest/objc342b.mft
+manifest/objc342b.ver

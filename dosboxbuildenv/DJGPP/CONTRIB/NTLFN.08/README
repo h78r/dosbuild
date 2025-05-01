@@ -1,0 +1,105 @@
+Welcome
+This is README file for Long File Name (LFN) Services for Windows NT 4.0,
+version 0.8 build 70. This release supersedes all previous versions
+
+Copyright and legal issues
+The sources of lfnsrv.dll is copyrighted by Wojciech Galazka.
+The source of lfnload.com are copyrighted by 
+Andrew Crabtree and Wojciech Galazka.
+Copyright (C) 1999-2000 Wojciech Galazka 
+<mailto:wojciech.galazka@polkomtel.com.pl>
+
+This program is released under the GNU General Public License.
+This program is released under the 'as is' basis and the author(s) may not 
+be held responsible for any possible damage resulting from the use or missue 
+of this program even if informed of such possibility.
+Neither former, present nor the future employeer(s) of Wojciech Galazka in any 
+way have been/are involved with the development of this package and may not be 
+held responsible for any issues resulting from the use of this program.
+
+A copy of the file "COPYING" is included with this document. If you did not 
+receive a copy of this file, you may obtain one from whence this document was 
+obtained, or by writing to:
+
+      Free Software Foundation
+      59 Temple Place - Suite 330
+      Boston, MA 02111-1307
+      USA
+
+Origin
+The sources of lfnsrv.dll are based on nt-lfn.dll written by 
+Andrew Crabtree and hane substantially evolved since them.
+The source code of lfnload.com is based on the source code of nt-lfn.com
+written by Andrew Crabtree too. First off the code was changed to 
+compile under TASM and later several changes have been made to make it 
+more readable and expandable. 
+The text of strcpy procedure that is used in lfnload.asm is based on
+"The UCR Standard Library for Assembly Language Programmers",
+written By Randall Hyde and others.
+
+Andrew no longer works on LFN services yet was quite happy that they are 
+still actively developed.
+
+The whole idea of working on this piece of code was to make many DJGPP
+tools work under Windows NT too. This was the primary goal and this is why 
+tools designed or based on other compilers may or may not work.
+
+Contents
+The following subdirectories contain the following
+	bin/		binaries necessary to run LFN services
+	docs/		some docs
+	manifest/	auxillary files for DJGPP
+	src/dll		source code of lfnsrv.dll
+	src/dos		source code of lfnload.com
+
+Current status
+All LFN calls are supported and are supposed to work. See
+docs/results.txt for information which packages were tested.
+The LFN services should work for most small and medium size projects. 
+When large makefiles are run then DOS box may crash due to problems 
+with DPMI under Windows NT
+
+Installation
+See INSTALL file for details
+
+Recompiling and debugging
+You need the following tools to compile LFN services
+* Borland TASM and TLINK to compile and build lfnload.com
+* Microsoft Visual C++ 5.0 Standard Edition (other versions not tested) 
+* Microsoft NT DDK, Platform SDK to compile and build lfnsrv.dll from 
+  msdn.microsoft.com
+* Numega SodtIce will help debugging the program (a 14 day evaluatiom
+  version is awailable on www.numega.com)
+* DbgView from www.sysinternals.com is an invaluable debugging tool if you 
+  cannot afford SoftIce.  
+
+Availability 
+You can grab a copy of the newest version of LFN services from 
+http://www.cybertrails.com/~fys/longfile.htm. It should be available on
+Simtel along with other DJGPP stuff.
+A message is posted to the comp.os.msdos.djgpp newsgroup when a new version 
+of LFN services is released.
+
+Bug reporting
+While serious effort has been put to make LFN services reliable I cannot 
+guarantee that they will always work. If you find any inconvenience using 
+LFN services please report that to Wojciech Galazka. 
+
+How you can help
+Please let me me know if find any problems with the LFN services.
+
+Limitations
+1 Due to the way DPMI is (mis)implemented in NT the LFN services may fail 
+  and the whole DOS box may crash when deeply nested calls of DPMI clients 
+  take place.
+2 You cannot switch to a directory whose length is larger than 64 characters.
+  This limitation is imposed by DOS SET_CURRENT_DIRECTORY call. The proper
+  way of implementing get/set directory seems to be with the use of
+  GetVDMCurrentDirectories and SetVDMCurrentDirectories, exported by 
+  kernel32.dll. These functions are undocumented and I don't know how to 
+  call them.
+3 Non English letters in file names are not supported
+4 Programs relying on DOS4GW are unsupported
+5 Programs relying on 16 bit DPMI (like Borland rtm.exe) are not supported
+6 Files larger than 2 GB are not supported.
+

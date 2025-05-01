@@ -1,0 +1,68 @@
+#
+# DSM for GNU bison 1.35 binaries.
+# Written by Juan Manuel Guerrero <st001906@hrz1.hrz.tu-darmstadt.de> 2002-03-28
+#
+
+dsm-file-version: 1.0
+dsm-name: bsn135b
+dsm-version: 0.4.0
+dsm-type: binaries
+
+dsm-author: Juan Manuel Guerrero
+dsm-author-email: st001906@hrz1.hrz.tu-darmstadt.de
+
+name: bison
+version: 1.35
+manifest: bsn135b
+sources-dsm: bsn135s
+short-description: Binaries for GNU bison version 1.35
+long-description: GNU bison is the GNU implementation of the\n\
+parser generator (yacc replacement).
+
+license: GNU GPL
+# author.
+author: Robert Corbett
+# author.
+author: Richard Stallman
+# author.
+author: Wilfred Hansen
+# This is the current maintainer (until we have a maintainer: tag).
+author: Akim Demaille
+author-email: akim@epita.fr
+# For reporting bugs
+mailing-list: bug-bison@gnu.org
+# The home page of GNU bison.
+web-site:http://www.gnu.org/software/bison
+# The ftp site of GNU bison.
+ftp-site:ftp://ftp.gnu.org/pub/gnu/bison
+# For discussing DJGPP- and DOS/Windows-specific aspects
+mailing-list: djgpp@delorie.com
+newsgroup: comp.os.msdos.djgpp
+
+porter: Juan Manuel Guerrero
+porter-email: st001906@hrz1.hrz.tu-darmstadt.de
+
+simtelnet-path: v2gnu/
+zip: bsn135b.zip
+
+changelog: gnu/bison-1.35/ChangeLog
+
+pre-install-readme: gnu/bison-1.35/djgpp/readme
+
+requires: DPMI 0.9
+replaces: bison < 1.35
+
+# For reading the docs.
+depends-on: info-reader
+depends-on: man
+depends-on: less
+
+# Remove obsolete parser files from previous
+# ports located in non-canonical subdirs.
+builtin-pre-install-script: command:\
+ rm -f /dev/env/DJDIR/share/bison.hai\
+ rm -f /dev/env/DJDIR/share/bison.sim
+
+# This updates the info/DIR main menu
+builtin-post-install-script: command:\
+ install-info --info-dir=/dev/env/DJDIR/info /dev/env/DJDIR/info/bison.info
