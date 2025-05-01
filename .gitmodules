@@ -1,0 +1,3 @@
+[submodule "compiler/tools/build-gcc"]
+	path = compiler/tools/build-gcc
+	url = https://github.com/jwt27/build-gcc
