@@ -1,0 +1,2 @@
+i386-pc-msdosdjgpp-gcc in.c libmikmod.a -o out.exe
+i386-pc-strip out.exe
