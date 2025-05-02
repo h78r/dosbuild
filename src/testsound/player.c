@@ -1,7 +1,8 @@
 #include <stdio.h>      // Provides standard input/output functions (e.g., printf)
 #include "mikmod.h"     // MikMod library header — provides music module playback API
-#include "xm_data1.h"   // Contains xm_data1[] array (raw music module bytes) and xm_data1_len (its length)
-#include "xm_data.h"    // Contains xm_data[] and xm_data_len for a second song
+#include "track1_xm_data.h"   // Contains xm_data1[] array (raw music module bytes) and xm_data1_len (its length)
+#include "track2_xm_data.h"   // Contains xm_data1[] array (raw music module bytes) and xm_data1_len (its length)
+#include "track3_xm_data.h"   // Contains xm_data1[] array (raw music module bytes) and xm_data1_len (its length)
 #include <dos.h>        // Provides DOS-specific functions (not directly used here, included for legacy compatibility)
 
 // Define a structure to store both a pointer to music data and its length
@@ -11,6 +12,13 @@ typedef struct {
     long length;        // Length of the module data in bytes
 } ModuleData;
 
+void clearSCR(){
+    int i; 
+    for (i=0; i < 100; i++){
+        printf("\n");
+    }
+}
+
 int main(void) {
 
     MODULE *module;  // Pointer to a MikMod MODULE structure — stores internal state for the currently loaded song
@@ -18,8 +26,11 @@ int main(void) {
     // Array of modules to be played in sequence
     // Each item contains a memory pointer to the embedded music file and its size
     ModuleData tracks[] = {
-        { xm_data1, xm_data1_len },  // First track: embedded .XM module
-        { xm_data,  xm_data_len }    // Second track
+        { track1_xm_data, track1_xm_data_len },  // First track: embedded .XM module
+        { track2_xm_data, track2_xm_data_len },  // Second track: embedded .XM module
+        { track3_xm_data, track3_xm_data_len },  // Third track: embedded .XM module
+
+
         // You can add more tracks here if needed
     };
 
@@ -42,6 +53,7 @@ int main(void) {
         return 1;
     }
 
+    //clearSCR(); //clear the screen
     // Inform the user that playback has started
     printf("Release Player Lib - H78 2005.\n");
 
