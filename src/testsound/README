@@ -1,2 +1,9 @@
+Must compile libmikmod first. Look in the DOS folder within it. 
+
+Need to move libmikmod.a to .
+
+Need the DOS extension driver too. 
+
+
 i386-pc-msdosdjgpp-gcc in.c libmikmod.a -o out.exe
 i386-pc-strip out.exe
